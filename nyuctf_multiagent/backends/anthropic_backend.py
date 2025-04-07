@@ -15,6 +15,11 @@ class AnthropicBackend(Backend):
             "cost_per_input_token": 3e-06,
             "cost_per_output_token": 15e-06
         },
+        "claude-3-5-sonnet-20240620": {
+            "max_context": 200000,
+            "cost_per_input_token": 3e-06,
+            "cost_per_output_token": 15e-06
+        },
         "claude-3-5-haiku-20241022": {
             "max_context": 200000,
             "cost_per_input_token": 0.8e-06,
