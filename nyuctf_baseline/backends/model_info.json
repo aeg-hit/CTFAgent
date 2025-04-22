@@ -31,6 +31,13 @@
             "cost_per_output_token": 6e-07
         }
     },
+    "dashscope": {
+        "qwen-plus-0112": {
+            "max_context": 128000,
+            "cost_per_input_token": 1e-10,
+            "cost_per_output_token": 2.5e-10
+        }
+    },
     "anthropic": {
         "claude-3-opus-20240229": {
             "max_context": 200000,

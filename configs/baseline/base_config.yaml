@@ -7,8 +7,8 @@ experiment:
 parameter:
   max_rounds: 3
   max_cost: 3
-  backend: "openai"
-  model: "gpt-4o-2024-05-13"
+  backend: "dashscope"
+  model: "qwen-plus-0112"
 
 prompts:
   system: |

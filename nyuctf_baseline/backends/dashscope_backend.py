@@ -34,21 +34,21 @@ def make_tool_result(res: ToolResult):
         tool_call_id=res.id,
     )
 
-class OpenAIBackend(Backend):
-    NAME = 'openai'
+class DashscopeBackend(Backend):
+    NAME = 'dashscope'
     MODELS = list(MODEL_INFO[NAME].keys())
 
     def __init__(self, system_message: str, hint_message: str, tools: dict[str,Tool], model: str = None, api_key: str = None, args: Namespace = None):
         if api_key is None:
-            if KEYS and "OPENAI_API_KEY" in KEYS:
-                api_key = KEYS["OPENAI_API_KEY"].strip()
-            elif "OPENAI_API_KEY" in os.environ:
-                api_key = os.environ["OPENAI_API_KEY"]
+            if KEYS and "DASHSCOPE_API_KEY" in KEYS:
+                api_key = KEYS["DASHSCOPE_API_KEY"].strip()
+            elif "DASHSCOPE_API_KEY" in os.environ:
+                api_key = os.environ["DASHSCOPE_API_KEY"]
             elif os.path.exists(os.path.expanduser(API_KEY_PATH)):
                 api_key = open(os.path.expanduser(API_KEY_PATH), "r").read().strip()
             else:
-                raise ValueError(f"No OpenAI API key provided and none found in OPENAI_API_KEY or {API_KEY_PATH}")
-        self.client = OpenAI(api_key=api_key.strip('\''))
+                raise ValueError(f"No DASHSCOPE API key provided and none found in DASHSCOPE_API_KEY or {API_KEY_PATH}")
+        self.client = OpenAI(api_key=api_key.strip('\''), base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",)
         self.tools = tools
         self.args = args
         self.tool_schemas = [ChatCompletionToolParam(**tool.schema) for tool in tools.values()]
@@ -63,12 +63,8 @@ class OpenAIBackend(Backend):
         self.messages += self.get_initial_messages()
         self.in_price = MODEL_INFO[self.NAME][self.model].get("cost_per_input_token", 0)
         self.out_price = MODEL_INFO[self.NAME][self.model].get("cost_per_output_token", 0)
-        try:
-            self.token_encoding = tiktoken.encoding_for_model(model_name=self.model)
-        except KeyError as e:
-            print(e)
-            print("Try dashscope.tokenizers (qwen)")
-            self.token_encoding = dashscope.tokenizers.get_tokenizer(self.model)
+        self.token_encoding = dashscope.tokenizers.get_tokenizer(self.model)
+
 
 
     def setup(self):

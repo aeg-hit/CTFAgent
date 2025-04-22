@@ -9,7 +9,8 @@ from .modules import Tool, CTFCategories
 from ..ctflogging import status
 
 SCRIPT_DIR = Path(__file__).parent.parent.parent.resolve()
-GHIDRA = SCRIPT_DIR / "ghidra_11.0.1_PUBLIC/support/analyzeHeadless"
+# change for windows: analyzeHeadless.bat (need jdk runtime)
+GHIDRA = SCRIPT_DIR / "ghidra_11.0.1_PUBLIC/support/analyzeHeadless.bat"
 
 class CommandExec(Tool):
     NAME = "run_command"

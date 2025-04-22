@@ -13,7 +13,7 @@ from nyuctf.dataset import CTFDataset
 from nyuctf.challenge import CTFChallenge
 
 from nyuctf_baseline.ctflogging import status
-from nyuctf_baseline.backends import Backend, OpenAIBackend, AnthropicBackend, VLLMBackend
+from nyuctf_baseline.backends import Backend, OpenAIBackend, AnthropicBackend, VLLMBackend, DashscopeBackend
 from nyuctf_baseline.formatters import Formatter
 from nyuctf_baseline.prompts.prompts import PromptManager
 from nyuctf_baseline.environment import CTFEnvironment
@@ -109,6 +109,15 @@ def main():
 
     if args.backend == "openai":
         backend = OpenAIBackend(
+                        prompt_manager.system_message(challenge),
+                        prompt_manager.hints_message(),
+                        environment.available_tools,
+                        model=args.model,
+                        api_key=args.api_key,
+                        args=args
+                    )
+    elif args.backend == "dashscope":
+        backend = DashscopeBackend(
                         prompt_manager.system_message(challenge),
                         prompt_manager.hints_message(),
                         environment.available_tools,
